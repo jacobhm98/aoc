@@ -12,7 +12,13 @@ import (
 func main() {
 	elfTotalCalories := readFile("input.txt")
 	sort.Slice(elfTotalCalories, func(i, j int) bool { return elfTotalCalories[i] < elfTotalCalories[j] })
-	fmt.Print(elfTotalCalories[len(elfTotalCalories)-1])
+	topThreeElves := elfTotalCalories[len(elfTotalCalories)-3:]
+	topThreeTotal := 0
+	for _, elf := range topThreeElves {
+		topThreeTotal += elf
+	}
+	fmt.Println(topThreeTotal)
+
 }
 
 func readFile(fileName string) []int {
