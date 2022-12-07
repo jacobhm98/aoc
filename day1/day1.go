@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	elfTotalCalories := readFile("input.txt")
+	elfTotalCalories := readFile("day1/input.txt")
 	sort.Slice(elfTotalCalories, func(i, j int) bool { return elfTotalCalories[i] < elfTotalCalories[j] })
 	topThreeElves := elfTotalCalories[len(elfTotalCalories)-3:]
 	topThreeTotal := 0
