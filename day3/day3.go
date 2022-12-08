@@ -9,8 +9,8 @@ func main() {
 	lines := utils.ReadFile("day3/input.txt")
 	runningTotalPriority := 0
 	for i := 0; i < len(lines); i += 3 {
-		duplicate_char := findDuplicateCharInLines(lines[i : i+3])
-		val := mapAsciiToInt(duplicate_char)
+		duplicateChar := findDuplicateCharInLines(lines[i : i+3])
+		val := mapAsciiToInt(duplicateChar)
 		runningTotalPriority += val
 	}
 	fmt.Println(runningTotalPriority)
@@ -46,8 +46,9 @@ func findDuplicateCharInLines(lines []string) byte {
 			return char
 		}
 	}
-	panic("no triple occuring character found")
+	panic("no triple occurring character found")
 }
+
 func findDuplicateCharInLine(line string) byte {
 	firstCompartment := line[:len(line)/2]
 	secondCompartment := line[len(line)/2:]
