@@ -11,7 +11,7 @@ func main() {
 	sectionPairs := utils.ReadFile("day4/input.txt")
 	fullyContainedSectionsWithinPairCount := 0
 	for _, sectionPair := range sectionPairs {
-		if existsFullyContainedSectionWithinPair(sectionPair) {
+		if existsOverlapWithinPair(sectionPair) {
 			fullyContainedSectionsWithinPairCount += 1
 		}
 	}
@@ -22,6 +22,16 @@ type intRange struct {
 	lower      int
 	upper      int
 	difference int
+}
+
+func existsOverlapWithinPair(pair string) bool {
+	ranges := strings.Split(pair, ",")
+	if len(ranges) != 2 {
+		panic("more than two ranges detected in a pair")
+	}
+	firstRange := getIntRange(ranges[0])
+	secondRange := getIntRange(ranges[1])
+	return (secondRange.lower <= firstRange.lower && secondRange.upper >= firstRange.lower) || (firstRange.lower <= secondRange.lower && firstRange.upper >= secondRange.lower)
 }
 
 func existsFullyContainedSectionWithinPair(pair string) bool {
