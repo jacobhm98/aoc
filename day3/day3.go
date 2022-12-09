@@ -1,7 +1,7 @@
 package main
 
 import (
-	"aoc-22/utils"
+	"aoc-22/pkg/utils"
 	"fmt"
 )
 
