@@ -12,7 +12,7 @@ import (
 func main() {
 	input := utils.ReadFile("day5/input.txt")
 	stacks, moves := createStacksAndGetListOfMoves(input)
-	stacks = executeMoves(stacks, moves)
+	stacks = executeMovesV2(stacks, moves)
 	fmt.Println(getFinishingState(stacks))
 }
 
@@ -33,10 +33,18 @@ type move struct {
 	amount int
 }
 
-func executeMoves(stacks []stack.StringStack, moves []string) []stack.StringStack{
+func executeMovesV2(stacks []stack.StringStack, moves []string) []stack.StringStack {
 	for _, line := range moves {
 		move := getMove(line)
-		for i := 0; i < move.amount; i++  {
+		stacks[move.to].PushList(stacks[move.from].PopList(move.amount))
+	}
+	return stacks
+}
+
+func executeMoves(stacks []stack.StringStack, moves []string) []stack.StringStack {
+	for _, line := range moves {
+		move := getMove(line)
+		for i := 0; i < move.amount; i++ {
 			stacks[move.to].Push(stacks[move.from].Pop())
 		}
 	}
