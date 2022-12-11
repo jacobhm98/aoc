@@ -3,15 +3,66 @@ package main
 import (
 	"aoc-22/pkg/utils"
 	"fmt"
+	"sort"
 )
 
 func main() {
 	lines := utils.ReadFile("day8/input.txt")
-	treeGrid, isTreeVisible := initializeGrid(lines)
-	iterateInwardsFromAllAnglesAndCheckIfVisible(treeGrid, isTreeVisible)
-	fmt.Println(countTrues(isTreeVisible))
+	treeGrid, _ := initializeGrid(lines)
+	scenicScores := getScenicScores(treeGrid)
+	var allScenicScores []int
+	for _, row := range scenicScores {
+		allScenicScores = append(allScenicScores, row...)
+	}
+	sort.Ints(allScenicScores)
+	fmt.Println(allScenicScores[len(allScenicScores) - 1])
 }
 
+func getScenicScores(treeGrid [][]uint8) [][]int {
+	scenicScores := make([][]int, len(treeGrid))
+	for i := range scenicScores {
+		scenicScores[i] = make([]int, len(treeGrid[0]))
+	}
+	for i := 1; i < len(treeGrid)-1; i++ {
+		for j := 1; j < len(treeGrid[i])-1; j++ {
+			scenicScores[i][j] = getScoreForTree(i, j, treeGrid)
+		}
+	}
+	return scenicScores
+}
+
+func getScoreForTree(i, j int, treeGrid [][]uint8) int {
+	currHeight := treeGrid[i][j]
+	sightDownwards := 0
+	for k := i + 1; k < len(treeGrid); k++ {
+		sightDownwards += 1
+		if currHeight <= treeGrid[k][j] {
+			break
+		}
+	}
+	sightUpwards := 0
+	for k := i - 1; k >= 0; k-- {
+		sightUpwards += 1
+		if currHeight <= treeGrid[k][j] {
+			break
+		}
+	}
+	sightRightwards := 0
+	for k := j + 1; k < len(treeGrid[i]); k++ {
+		sightRightwards += 1
+		if currHeight <= treeGrid[i][k] {
+			break
+		}
+	}
+	sightLeftwards := 0
+	for k := j - 1; k >= 0; k-- {
+		sightLeftwards += 1
+		if currHeight <= treeGrid[i][k] {
+			break
+		}
+	}
+	return sightDownwards * sightUpwards * sightRightwards * sightLeftwards
+}
 func countTrues(isTreeVisible [][]bool) int {
 	count := 0
 	for _, i := range isTreeVisible {
